@@ -1,0 +1,14 @@
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\bin\Debug\net8.0\Course Managment Console.exe
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\bin\Debug\net8.0\Course Managment Console.deps.json
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\bin\Debug\net8.0\Course Managment Console.runtimeconfig.json
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\bin\Debug\net8.0\Course Managment Console.dll
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\bin\Debug\net8.0\Course Managment Console.pdb
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj\Debug\net8.0\Course Managment Console.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj\Debug\net8.0\Course Managment Console.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj\Debug\net8.0\Course Managment Console.AssemblyInfo.cs
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj\Debug\net8.0\Course Managment Console.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj\Debug\net8.0\Course Managment Console.dll
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj\Debug\net8.0\refint\Course Managment Console.dll
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj\Debug\net8.0\Course Managment Console.pdb
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj\Debug\net8.0\Course Managment Console.genruntimeconfig.cache
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj\Debug\net8.0\ref\Course Managment Console.dll
