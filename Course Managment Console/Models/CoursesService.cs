@@ -12,76 +12,31 @@ namespace Course_Managment_Console.Models
         public List<Group> Groups { get; set; } = new List<Group>();
         public CoursesService()
         {
-            var programming = new Category("Programming", "Kod və proqram teminatı");
-            var design = new Category("Design", "Qrafik dizayn");
-            var system = new Category("System Administration", "Şebeke ve sistem idaresi");
-
-            Categories.Add(programming);
-            Categories.Add(design);
-            Categories.Add(system);
-
-            var group1 = new Group { No = "P101", Category = programming, IsOnline = true };
-            var group2 = new Group { No = "D202", Category = design, IsOnline = false };
-            var group3 = new Group { No = "S303", Category = system, IsOnline = true };
-
-            group1.Students.Add(new Student { Name = "Fatime", Surname = "Qarayeva", GroupNo = "BB209", Type = "zemanetli" });
-            group1.Students.Add(new Student { Name = "Lamiye", Surname = "Hesenzade", GroupNo = "BB208", Type = "zemanetsiz" });
-
-            for (int i = 1; i <= 10; i++)
-            {
-                group2.Students.Add(new Student
-                {
-                    Name = $"Student{i}",
-                    Surname = "Test",
-                    GroupNo = "D202",
-                    Type = i % 2 == 0 ? "zemanetli" : "zemanetsiz"
-                });
-            }
-
-            Groups.Add(group1);
-            Groups.Add(group2);
-            Groups.Add(group3);
+            Groups.Add(new Group { No = "P101", Category = Category.Programming, IsOnline = true });
+            Groups.Add(new Group { No = "D202", Category = Category.Design, IsOnline = false });
+            Groups.Add(new Group { No = "S303", Category = Category.SystemAdministration, IsOnline = true });
+            AddExistingStudents();
         }
-        
-       
 
-        public void CreatedGroup()
+        private void AddExistingStudents()
         {
-            Console.WriteLine("Qrupunuzun nomresini  daxil edin");
-          string no=Console.ReadLine();
-            if (Groups.Any(g=>g.No==no))
-            {
-                Console.WriteLine("Bu adda qrup movcudur");
-                return;
-            }
-            Console.WriteLine("Kategoryalardan birini secin");
-            foreach (var category in Categories)
-            {
-                Console.WriteLine(category);
-                Console.WriteLine("Kategorinin ID daxil et ");
-                int categoryId=Convert.ToInt32(Console.ReadLine());
-                var selectedCategory = Categories.FirstOrDefault(c => c.Id == categoryId);
-                if (selectedCategory==null)
-                {
-                    Console.WriteLine("Yanlis kategorya");
-                    return;
-                }
-                Console.WriteLine("Qrup onlin dir? Beli/Xeyr:");
-                bool isonline = Console.ReadLine().ToLower() == "beli";
-                Group group = new Group
-                {
-                    Category = selectedCategory,
-                    No = no,
-                    IsOnline=isonline
+           
+            var group1 = Groups.FirstOrDefault(g => g.No == "P101");
+            var group2 = Groups.FirstOrDefault(g => g.No == "D202");
 
-                };
-                Groups.Add(group);
-                Console.WriteLine("Group yaradildi");
+            if (group1 != null)
+            {
+                group1.Students.Add(new Student { Name = "Fatime", Surname = "Qarayeva", GroupNo = "P101", Type = "zemanetli" });
+                group1.Students.Add(new Student { Name = "Lamiye", Surname = "Hesenzade", GroupNo = "P101", Type = "zemanetsiz" });
             }
-            
 
+            if (group2 != null)
+            {
+                group2.Students.Add(new Student { Name = "Ramil", Surname = "Aslanov", GroupNo = "D202", Type = "zemanetli" });
+                group2.Students.Add(new Student { Name = "Aysel", Surname = "Mammadova", GroupNo = "D202", Type = "zemanetsiz" });
+            }
         }
-        public void ShowAll()
+         public void ShowAll()
         {
             foreach (var group in Groups)
             {
@@ -90,43 +45,122 @@ namespace Course_Managment_Console.Models
         }
         public void EditGroup()
         {
-            Console.WriteLine("Deysimek istediyiniz qruou qeyd edin");
-            string oldNo = Console.ReadLine();
+            string oldNo = ExitHelper.ReadWithExit("Deyişmek istediyiniz qrupun nömresini daxil edin (çıkmaq üçün Enter): ");
+            if (oldNo == null) return;
+
             var group = Groups.FirstOrDefault(g => g.No == oldNo);
-            if (group==null)
+            if (group == null)
             {
-                Console.WriteLine("Qrup tapilmadi");
+                Console.WriteLine("Qrup tapılmadı.");
                 return;
             }
-            Console.Write("Yeni qrup nömrəsini daxil edin: ");
-            string newNo = Console.ReadLine();
+
+            string newNo = ExitHelper.ReadWithExit("Yeni qrup nömrəsini daxil edin (çıkmaq üçün Enter): ");
+            if (newNo == null) return;
+
             if (Groups.Any(g => g.No == newNo))
             {
-                Console.WriteLine("Bu adda basqa qrup movcudur");
+                Console.WriteLine("Bu adda başqa qrup mövcuddur.");
                 return;
             }
-            group.No = newNo;
-            foreach (var student in group.Students )
+
+            try
             {
-                student.GroupNo = newNo;
-                Console.WriteLine("Group nomresi deyisdirildi");
+                group.No = newNo;
+                foreach (var student in group.Students)
+                {
+                    student.GroupNo = newNo;
+                }
+                Console.WriteLine("Qrup nömresi dəyişdirildi.");
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Xeta: " + ex.Message);
             }
         }
+
         public void ShowGroupsStudents()
         {
-            Console.WriteLine("Qrup nomresini daxil edin");
-            string no = Console.ReadLine();
+            
+            string no = ExitHelper.ReadWithExit("Qrup nömresini daxil edin (çıkmaq üçün Enter): ");
+            if (no == null) return;
+
+            
             var group = Groups.FirstOrDefault(g => g.No == no);
-            if (group==null)
+            if (group == null)
             {
-                Console.WriteLine("Qrup tapilmadi");
+                Console.WriteLine("Qrup tapılmadı.");
                 return;
             }
-            foreach (var student in group.Students)
+
+            
+            if (group.Students.Count == 0)
             {
-                Console.WriteLine(student);
+                Console.WriteLine("Bu qrupda heç bir telebe yoxdur.");
+            }
+            else
+            {
+                Console.WriteLine($"Qrup: {group.No} - Kateqoriya: {group.Category} - {(group.IsOnline ? "Online" : "Offline")}");
+                Console.WriteLine("Telebeler:");
+                foreach (var student in group.Students)
+                {
+                    Console.WriteLine(student);
+                }
             }
         }
+
+        public void CreatedGroup()
+        {
+            try
+            {
+                string no = ExitHelper.ReadWithExit("Qrup nömresini daxil edin (çıkmaq üçün Enter): ");
+                if (no == null) return;
+
+                if (Groups.Any(g => g.No == no))
+                {
+                    Console.WriteLine("Bu adda qrup artıq mövcuddur.");
+                    return;
+                }
+
+                Console.WriteLine("Kateqoriyalardan birini seçin:");
+                foreach (var cat in Enum.GetValues(typeof(Category)))
+                {
+                    Console.WriteLine($"{(int)cat}. {cat}");
+                }
+
+                string categoryInput = ExitHelper.ReadWithExit("Kateqorinin ID-sini daxil et (çıkmaq üçün Enter): ");
+                if (categoryInput == null) return;
+
+                if (!int.TryParse(categoryInput, out int categoryId) || !Enum.IsDefined(typeof(Category), categoryId))
+                {
+                    Console.WriteLine("Yanlış kateqoriya seçimi.");
+                    return;
+                }
+
+                string isOnlineInput = ExitHelper.ReadWithExit("Qrup onlinedir? (beli/xeyr) (çıkmaq üçün Enter): ");
+                if (isOnlineInput == null) return;
+
+                bool isOnline = isOnlineInput.Trim().ToLower() == "beli";
+
+                Group group = new Group
+                {
+                    No = no,
+                    Category = (Category)categoryId,
+                    IsOnline = isOnline
+                };
+
+                Groups.Add(group);
+                Console.WriteLine("Qrup yaradıldı.");
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Xeta: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Namelum xeta baş verdi: " + ex.Message);
+            }
+        }  
         public void ShowAllStudents()
         {
             foreach (var group in Groups)
@@ -139,36 +173,66 @@ namespace Course_Managment_Console.Models
         }
         public void CreatedStudent()
         {
-            Console.Write("Telebenin adi: ");
-            string name = Console.ReadLine();
-            Console.Write("Telebenin soyadi: ");
-            string surname = Console.ReadLine();
-            Console.Write("Telebenin qrupunu daxil edin: ");
-            string groupNo = Console.ReadLine();
-            var group = Groups.FirstOrDefault(g => g.No ==groupNo );
-            if (group==null)
+            try
             {
-                Console.WriteLine("Grup tapilmadi");
-                return;
-            }
-            if (group.Students.Count>=group.Limit)
-            {
-                Console.WriteLine("Qrup doludur");
-                return;
-            }
-            Console.Write("Telebe tipi(zemanetli/zemanetsiz): ");
-            string type = Console.ReadLine();
-            Student student = new Student
-            {
-                Name = name,
-                Surname = surname,
-                GroupNo = groupNo,
-                Type = type
+                string name = ExitHelper.ReadWithExit("Telebenin adı (çıkmaq üçün Enter): ");
+                if (name == null|| name.Length <= 3)
+                {
+                    Console.WriteLine("Bu ad formati duzgun deyil");
 
-            };
-            group.Students.Add(student);
-            Console.WriteLine("Telebe elave edildi");
+                }
+
+               
+
+                string surname = ExitHelper.ReadWithExit("Telebenin soyadı (çıkmaq üçün Enter): ");
+                if (surname == null|| surname.Length<=3)
+                {
+                    Console.WriteLine("Soyad formadi duzgun deyil");
+                }
+
+                string groupNo = ExitHelper.ReadWithExit("Qrup nömresi (çıkmaq üçün Enter): ");
+                if (groupNo == null)
+                {
+                    Console.WriteLine("Qrupun nomresini daxil etmelisiniz");
+                }
+
+                var group = Groups.FirstOrDefault(g => g.No == groupNo);
+                if (group == null)
+                {
+                    Console.WriteLine("Qrup tapılmadı.");
+                    return;
+                }
+
+                if (group.Students.Count >= group.Limit)
+                {
+                    Console.WriteLine("Qrup doludur.");
+                    return;
+                }
+
+                string type = ExitHelper.ReadWithExit("Telebe tipi (zemanetli/zemanetsiz) (çıkmaq üçün Enter): ");
+                if (type == null) return;
+
+                Student student = new Student
+                {
+                    Name = name,
+                    Surname = surname,
+                    GroupNo = groupNo,
+                    Type = type
+                };
+
+                group.Students.Add(student);
+                Console.WriteLine("Telebe elavə edildi.");
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Xeta: " + ex.Message);
+            }
         }
 
+
+
+
     }
+
 }
+

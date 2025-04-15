@@ -12,3 +12,4 @@ C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj
 C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj\Debug\net8.0\Course Managment Console.pdb
 C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj\Debug\net8.0\Course Managment Console.genruntimeconfig.cache
 C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj\Debug\net8.0\ref\Course Managment Console.dll
+C:\Users\User\source\repos\Course Managment Console\Course Managment Console\obj\Debug\net8.0\Course Managment Console.sourcelink.json
